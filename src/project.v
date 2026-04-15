@@ -24,12 +24,14 @@ module tt_um_mastensg_ttsky26a_demo (
 	reg [5:0] color;
 	reg [1:16] x;
 
+	wire _unused = &{ena, clk, rst_n, ui_in, uio_in, 1'b0};
+
 	assign uo_out  = {H, B[0], G[0], R[0], V, B[1], G[1], R[1]};
 	assign uio_out = 0;
 	assign uio_oe  = 0;
 
 	always @(posedge clk) begin
-		if (!rst_n) begin
+		if (~rst_n) begin
 			rx <= 0;
 			ry <= 0;
 			x <= 'b1010110011100001;
@@ -62,6 +64,4 @@ module tt_um_mastensg_ttsky26a_demo (
 			else		color <= x[1:12];
 		end
 	end
-
-	wire _unused = &{ena, clk, rst_n, 1'b0};
 endmodule
