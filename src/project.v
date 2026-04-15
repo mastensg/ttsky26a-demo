@@ -50,23 +50,23 @@ module tt_um_mastensg_ttsky26a_demo (
 			if (rx<640 && ry<480) begin
 				if (rx<320) begin
 					if (ry<240) begin
-						R <= 2'b11
-						G <= 2'b01
-						B <= 2'b01
+						R <= 2'b11;
+						G <= 2'b01;
+						B <= 2'b01;
 					end else begin
-						R <= 2'b10
-						G <= 2'b11
-						B <= 2'b10
+						R <= 2'b10;
+						G <= 2'b11;
+						B <= 2'b10;
 					end
 				end else begin
 					if (ry<240) begin
-						R <= 2'b11
-						G <= 2'b11
-						B <= 2'b01
+						R <= 2'b11;
+						G <= 2'b11;
+						B <= 2'b01;
 					end else begin
-						R <= 2'b10
-						G <= 2'b10
-						B <= 2'b11
+						R <= 2'b10;
+						G <= 2'b10;
+						B <= 2'b11;
 					end
 				end
 			end else begin
