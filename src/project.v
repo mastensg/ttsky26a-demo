@@ -21,8 +21,6 @@ module tt_um_mastensg_ttsky26a_demo (
 	reg [1:0] B;
 	reg [9:0] rx;
 	reg [9:0] ry;
-	reg [5:0] color;
-	reg [1:16] x;
 
 	wire _unused = &{ena, clk, rst_n, ui_in, uio_in, 1'b0};
 
@@ -34,7 +32,6 @@ module tt_um_mastensg_ttsky26a_demo (
 		if (~rst_n) begin
 			rx <= 0;
 			ry <= 0;
-			x <= 'b1010110011100001;
 		end else begin
 			if ((640+16 <= rx) && (rx < 640+16+96))	H <= 0;
 			else					H <= 1;
@@ -51,17 +48,32 @@ module tt_um_mastensg_ttsky26a_demo (
 				end
 			end
 			if (rx<640 && ry<480) begin
-				R <= color[11:8];
-				G <= color[7:4];
-				B <= color[3:0];
+				if (rx<320) begin
+					if (ry<240) begin
+						R <= 2'b11
+						G <= 2'b01
+						B <= 2'b01
+					end else begin
+						R <= 2'b10
+						G <= 2'b11
+						B <= 2'b10
+					end
+				end else begin
+					if (ry<240) begin
+						R <= 2'b11
+						G <= 2'b11
+						B <= 2'b01
+					end else begin
+						R <= 2'b10
+						G <= 2'b10
+						B <= 2'b11
+					end
+				end
 			end else begin
 				R <= 0;
 				G <= 0;
 				B <= 0;
 			end
-			x = {x[11] ^ x[13] ^ x[14] ^ x[16], x[1:15]};
-			if (ui_in[0])	color <= x[1] ? 'hfff : 0;
-			else		color <= x[1:12];
 		end
 	end
 endmodule
