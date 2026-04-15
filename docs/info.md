@@ -9,11 +9,11 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+It generates a VGA signal.
 
 ## How to test
 
-Explain how to use your project
+Connect VGA Pmod and monitor, clock at 80 MHz, and pulse reset.
 
 ## External hardware
 
