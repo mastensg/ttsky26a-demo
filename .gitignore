@@ -4,6 +4,9 @@
 *.vcd
 .DS_Store
 .idea
+/build
+/oss-cad-suite*
+/tt
 runs
 src/config_merged.json
 src/user_config.json
