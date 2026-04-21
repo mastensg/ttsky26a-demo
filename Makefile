@@ -9,7 +9,7 @@ distclean:
 
 fpga:
 	$(ENVIRONMENT) pit/bin/python3 tt/tt_fpga.py harden
-	mpremote cp build/tt_um_mastensg_ttsky26a_demo.bin :bitstreams/demo.bin
+	$(ENVIRONMENT) pit/bin/python3 tt/tt_fpga.py configure --upload --set-default --clockrate 25000000
 
 setup:
 	[ -f oss-cad-suite-linux-*.tgz	] || wget https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-04-21/oss-cad-suite-linux-x64-20260421.tgz
