@@ -28,11 +28,15 @@ module tt_um_mastensg_ttsky26a_demo (
 	assign uio_out = 0;
 	assign uio_oe  = 0;
 
+	reg [1:16] x;
+
 	always @(posedge clk) begin
 		if (~rst_n) begin
+			x <= 'b1010110011100001;
 			rx <= 0;
 			ry <= 0;
 		end else begin
+			x <= {x[11] ^ x[13] ^ x[14] ^ x[16], x[1:15]};
 			if ((640+16 <= rx) && (rx < 640+16+96))	H <= 0;
 			else					H <= 1;
 			if ((480+11 <= ry) && (ry < 480+11+2))	V <= 0;
@@ -48,27 +52,9 @@ module tt_um_mastensg_ttsky26a_demo (
 				end
 			end
 			if (rx<640 && ry<480) begin
-				if (rx<320) begin
-					if (ry<240) begin
-						R <= 2'b11;
-						G <= 2'b10;
-						B <= 2'b10;
-					end else begin
-						R <= 2'b10;
-						G <= 2'b11;
-						B <= 2'b10;
-					end
-				end else begin
-					if (ry<240) begin
-						R <= 2'b11;
-						G <= 2'b11;
-						B <= 2'b10;
-					end else begin
-						R <= 2'b10;
-						G <= 2'b10;
-						B <= 2'b11;
-					end
-				end
+				R <= x[1:3];
+				G <= x[3:5];
+				B <= x[5:7];
 			end else begin
 				R <= 0;
 				G <= 0;
