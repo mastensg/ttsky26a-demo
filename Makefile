@@ -4,6 +4,9 @@ ENVIRONMENT = PATH=$$(realpath oss-cad-suite/bin):$$PATH
 
 all:
 
+check:
+	verilator --lint-only src/project.v
+
 distclean:
 	rm -rf oss-cad-suite pit tt
 
@@ -21,4 +24,4 @@ setup:
 	[ -d pit			] || python3 -m venv pit
 	pit/bin/pip install -r tt/requirements.txt
 
-.PHONY: all distclean fpga load setup
+.PHONY: all check distclean fpga load setup
