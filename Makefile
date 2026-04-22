@@ -9,6 +9,9 @@ distclean:
 
 fpga:
 	$(ENVIRONMENT) pit/bin/python3 tt/tt_fpga.py harden
+	cat build/*.log | grep -i warn
+
+load:
 	$(ENVIRONMENT) pit/bin/python3 tt/tt_fpga.py configure --upload --set-default --clockrate 25000000
 
 setup:
@@ -18,4 +21,4 @@ setup:
 	[ -d pit			] || python3 -m venv pit
 	pit/bin/pip install -r tt/requirements.txt
 
-.PHONY: all distclean fpga setup
+.PHONY: all distclean fpga load setup
