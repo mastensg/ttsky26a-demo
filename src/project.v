@@ -15,7 +15,7 @@ module tt_um_mastensg_ttsky26a_demo (
 	input  wire       clk,      // clock
 	input  wire       rst_n     // reset_n - low to reset
 );
-	reg H, V;
+	reg A, H, V;
 	reg [1:0] R;
 	reg [1:0] G;
 	reg [1:0] B;
@@ -25,8 +25,8 @@ module tt_um_mastensg_ttsky26a_demo (
 	wire _unused = &{ena, clk, rst_n, ui_in, uio_in, 1'b0};
 
 	assign uo_out  = {H, B[0], G[0], R[0], V, B[1], G[1], R[1]};
-	assign uio_out = 0;
-	assign uio_oe  = 0;
+	assign uio_out = {A, 7'b0};
+	assign uio_oe  = {1, 7'b0};
 
 	reg [1:16] x;
 
@@ -44,6 +44,7 @@ module tt_um_mastensg_ttsky26a_demo (
 			if (rx < 640+16+96+48-1) begin
 				rx <= rx+1;
 			end else begin
+				A <= x[1];
 				rx <= 0;
 				if (ry < 480+11+2+31-1) begin
 					ry <= ry+1;
