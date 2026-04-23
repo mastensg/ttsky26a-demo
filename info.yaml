@@ -4,7 +4,7 @@ project:
   discord:      "mastensg"
   description:  "demo"
   language:     "Verilog"
-  clock_hz:     80000000
+  clock_hz:     25000000
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
   tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
