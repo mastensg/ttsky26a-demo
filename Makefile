@@ -1,22 +1,25 @@
 .POSIX:
 
 ENVIRONMENT = PATH=$$(realpath oss-cad-suite/bin):$$PATH
-
+FPGA = build/tt_um_mastensg_ttsky26a_demo.bin
 SOURCES = src/project.v src/snow.v
 
-all:
+all: $(FPGA)
 
 check:
 	verilator --lint-only $(SOURCES)
 
+clean:
+	rm -rf build
+
 distclean:
 	rm -rf oss-cad-suite pit tt
 
-fpga:
+$(FPGA): $(SOURCES)
 	$(ENVIRONMENT) pit/bin/python3 tt/tt_fpga.py harden
 	cat build/*.log | grep -i warn
 
-load:
+load: all
 	$(ENVIRONMENT) pit/bin/python3 tt/tt_fpga.py configure --upload --set-default --clockrate 25000000
 
 setup:
@@ -26,4 +29,4 @@ setup:
 	[ -d pit			] || python3 -m venv pit
 	pit/bin/pip install -r tt/requirements.txt
 
-.PHONY: all check distclean fpga load setup
+.PHONY: all check clean distclean load setup
