@@ -2,10 +2,12 @@
 
 ENVIRONMENT = PATH=$$(realpath oss-cad-suite/bin):$$PATH
 
+SOURCES = src/project.v src/snow.v
+
 all:
 
 check:
-	verilator --lint-only src/project.v
+	verilator --lint-only $(SOURCES)
 
 distclean:
 	rm -rf oss-cad-suite pit tt
