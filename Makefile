@@ -2,7 +2,7 @@
 
 ENVIRONMENT = PATH=$$(realpath oss-cad-suite/bin):$$PATH
 FPGA = build/tt_um_mastensg_ttsky26a_demo.bin
-SOURCES = src/project.v src/snow.v
+SOURCES = src/circ.v src/project.v src/snow.v
 
 all: $(FPGA)
 

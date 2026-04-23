@@ -20,7 +20,7 @@ module tt_um_mastensg_ttsky26a_demo (
 	assign uio_out[6:0] = 7'b0;
 	assign uio_oe  = 8'b10000000;
 
-	snow demo(
+	circ demo(
 		uio_out[7],
 		uo_out[7],
 		uo_out[3],
