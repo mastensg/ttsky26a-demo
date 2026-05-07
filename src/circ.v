@@ -13,7 +13,11 @@ module circ(
 	reg [1:16] x;
 	reg signed [19:0] cx = 8;
 	reg signed [19:0] cy = 8;
-	reg [19:0] s2 = 7*7;
+	reg [19:0] s2 = 6*6;
+
+	wire [19:0] col = (rx-120) / 16;
+	wire [19:0] row = (ry-40) / 16;
+	wire inv = col[0] == row[0];
 
 	wire [19:0] mx = (rx+8) % 16;
 	wire [19:0] my = (ry+8) % 16;
@@ -46,7 +50,7 @@ module circ(
 				end
 			end
 			if (120 <= rx && rx < 520 && 40 <= ry && ry < 440) begin
-				if (r2 < s2) begin
+				if ((r2 < s2) ^ inv) begin
 					R <= {1, x[2]};
 					G <= {1, x[1]};
 					B <= 2'b01;
@@ -55,6 +59,10 @@ module circ(
 					G <= 2'b01;
 					B <= {1, x[3]};
 				end
+			end else if (rx < 640 && ry < 480) begin
+				R <= 2'b11;
+				G <= 2'b11;
+				B <= 2'b11;
 			end else begin
 				R <= 2'b00;
 				G <= 2'b00;
