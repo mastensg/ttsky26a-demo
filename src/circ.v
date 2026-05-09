@@ -8,21 +8,15 @@ module circ(
 	input	wire	clk,
 	input	wire	run
 );
-	reg [19:0] rx;
-	reg [19:0] ry;
+	reg [9:0] rx;
+	reg [9:0] ry;
 	reg [1:16] x;
-	reg signed [19:0] cx = 8;
-	reg signed [19:0] cy = 8;
-	reg [19:0] s2 = 6*6;
+	reg signed [10:0] cx = 320;
+	reg signed [10:0] cy = 240;
+	reg [19:0] s2 = 128*128;
 
-	wire [19:0] col = (rx-120) / 16;
-	wire [19:0] row = (ry-40) / 16;
-	wire inv = col[0] == row[0];
-
-	wire [19:0] mx = (rx+8) % 16;
-	wire [19:0] my = (ry+8) % 16;
-	wire signed [19:0] a = mx-cx;
-	wire signed [19:0] b = my-cy;
+	wire signed [19:0] a = rx-cx;
+	wire signed [19:0] b = ry-cy;
 	wire signed [19:0] aa = a*a;
 	wire signed [19:0] bb = b*b;
 	wire signed [19:0] r2 = aa+bb;
@@ -33,7 +27,8 @@ module circ(
 			rx <= 0;
 			ry <= 0;
 		end else begin
-			x <= {x[11] ^ x[13] ^ x[14] ^ x[16], x[1:15]};
+			if (rx[1:0] == 0)
+				x <= {x[11] ^ x[13] ^ x[14] ^ x[16], x[1:15]};
 			if ((640+16 <= rx) && (rx < 640+16+96))	H <= 0;
 			else					H <= 1;
 			if ((480+11 <= ry) && (ry < 480+11+2))	V <= 0;
@@ -49,24 +44,14 @@ module circ(
 					ry <= 0;
 				end
 			end
-			if (120 <= rx && rx < 520 && 40 <= ry && ry < 440) begin
-				if ((r2 < s2) ^ inv) begin
-					R <= {1, x[2]};
-					G <= {1, x[1]};
-					B <= 2'b01;
-				end else begin
-					R <= 2'b01;
-					G <= 2'b01;
-					B <= {1, x[3]};
-				end
-			end else if (rx < 640 && ry < 480) begin
-				R <= 2'b11;
-				G <= 2'b11;
-				B <= 2'b11;
+			if (r2 < s2) begin
+				R <= x[1:3];
+				G <= x[1:3];
+				B <= x[1:3];
 			end else begin
-				R <= 2'b00;
-				G <= 2'b00;
-				B <= 2'b00;
+				R <= 0;
+				G <= 0;
+				B <= 0;
 			end
 		end
 	end
