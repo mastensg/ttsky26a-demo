@@ -2,7 +2,10 @@
 
 ENVIRONMENT = PATH=$$(realpath oss-cad-suite/bin):$$PATH
 FPGA = build/tt_um_mastensg_ttsky26a_demo.bin
-SOURCES = src/circ.v src/project.v src/snow.v
+SOURCES = src/circ.v src/grad.v src/luz.v src/project.v src/snow.v
+
+bload:
+	touch Makefile
 
 all: $(FPGA)
 
@@ -20,7 +23,7 @@ $(FPGA): $(SOURCES)
 	cat build/*.log | grep -i warn
 
 load: all
-	$(ENVIRONMENT) pit/bin/python3 tt/tt_fpga.py configure --upload --set-default --clockrate 25000000
+	$(ENVIRONMENT) pit/bin/python3 tt/tt_fpga.py configure --upload --set-default
 
 setup:
 	[ -f oss-cad-suite-linux-*.tgz	] || wget https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-04-21/oss-cad-suite-linux-x64-20260421.tgz

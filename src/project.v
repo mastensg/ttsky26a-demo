@@ -20,7 +20,7 @@ module tt_um_mastensg_ttsky26a_demo (
 	assign uio_out[6:0] = 7'b0;
 	assign uio_oe  = 8'b10000000;
 
-	circ demo(
+	luz demo(
 		uio_out[7],
 		uo_out[7],
 		uo_out[3],
@@ -28,6 +28,7 @@ module tt_um_mastensg_ttsky26a_demo (
 		{uo_out[1], uo_out[5]},
 		{uo_out[2], uo_out[6]},
 		clk,
-		rst_n);
+		rst_n,
+		ui_in);
 
 endmodule

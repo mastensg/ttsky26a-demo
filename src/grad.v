@@ -1,4 +1,5 @@
-module circ(
+/* verilator lint_off ASCRANGE */
+module grad(
 	output	reg	A,
 	output	reg	H,
 	output	reg	V,
@@ -9,18 +10,12 @@ module circ(
 	input	wire	run,
 	input	wire [7:0] in
 );
-	reg [9:0] rx;
-	reg [9:0] ry;
 	reg [1:16] x;
-	reg signed [10:0] cx = 320;
-	reg signed [10:0] cy = 240;
-	reg [19:0] s2 = 128*128;
+	reg [19:0] t;
 
-	wire signed [19:0] a = rx-cx;
-	wire signed [19:0] b = ry-cy;
-	wire signed [19:0] aa = a*a;
-	wire signed [19:0] bb = b*b;
-	wire signed [19:0] r2 = aa+bb;
+	reg [19:0] rx;
+	reg [19:0] ry;
+	wire [7:0] whiteness = rx[7:0] - 16 + {4'b0, x[1:4]};
 
 	always @(posedge clk) begin
 		if (~run) begin
@@ -28,7 +23,7 @@ module circ(
 			rx <= 0;
 			ry <= 0;
 		end else begin
-			if (rx[1:0] == 0)
+			if (in[0])
 				x <= {x[11] ^ x[13] ^ x[14] ^ x[16], x[1:15]};
 			if ((640+16 <= rx) && (rx < 640+16+96))	H <= 0;
 			else					H <= 1;
@@ -43,16 +38,21 @@ module circ(
 					ry <= ry+1;
 				end else begin
 					ry <= 0;
+					t <= t+1;
 				end
 			end
-			if (r2 < s2) begin
-				R <= x[1:3];
-				G <= x[1:3];
-				B <= x[1:3];
+			if (rx < 640 && ry < 240) begin
+				R <= rx[7:6];
+				G <= rx[7:6];
+				B <= rx[7:6];
+			end else if (rx < 640 && ry < 480) begin
+				R <= whiteness[7:6];
+				G <= whiteness[7:6];
+				B <= whiteness[7:6];
 			end else begin
-				R <= 0;
-				G <= 0;
-				B <= 0;
+				R <= 2'b00;
+				G <= 2'b00;
+				B <= 2'b00;
 			end
 		end
 	end
