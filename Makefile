@@ -10,7 +10,7 @@ bload:
 all: $(FPGA)
 
 check:
-	verilator --lint-only $(SOURCES)
+	verilator --top tt_um_mastensg_ttsky26a_demo --lint-only $(SOURCES)
 
 clean:
 	rm -rf build
