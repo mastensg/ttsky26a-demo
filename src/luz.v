@@ -71,7 +71,7 @@ module luz(
 					ry <= 0;
 					t <= t+1;
 					if (0 == t[4:0])
-						z <= {1'b0, x};
+						z <= {1'b0, x, 1'b0};
 				end
 			end
 			if (-12<=col && col<=+12 && -12<=row && row<=+12) begin
@@ -100,10 +100,14 @@ module luz(
 						B <= gb[4:3];
 					end
 				end
-			end else if (rx < 640 && ry < 480) begin
+			end else if (-13<=col && col<=+13 && -13<=row && row<=+13) begin
 				R <= 2'b10;
 				G <= 2'b10;
 				B <= 2'b10;
+			end else if (rx < 640 && ry < 480) begin
+				R <= 2'b11;
+				G <= 2'b11;
+				B <= 2'b11;
 			end else begin
 				R <= 2'b00;
 				G <= 2'b00;
