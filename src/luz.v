@@ -1,4 +1,3 @@
-/* verilator lint_off ASCRANGE */
 module luz(
 	output	reg	A,
 	output	reg	H,
