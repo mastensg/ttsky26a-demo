@@ -10,7 +10,7 @@ module luz(
 	input	wire	run,
 	input	wire [7:0] in
 );
-	reg [1:16] x;
+	reg [15:0] x;
 	reg [19:0] t;
 
 	reg [19:0] rx;
@@ -25,15 +25,15 @@ module luz(
 	reg		[19:0] abscol;
 	reg		[19:0] absrow;
 	wire		[19:0] man = abscol + absrow;
-	wire		[ 7:0] fr  = (7'd21 + man[6:0] - t[10:4] + {6'b0, x[1:2]});
-	wire		[ 7:0] fg  = (7'd25 + man[6:0] - t[ 9:3] + {6'b0, x[1:2]});
-	wire		[ 7:0] fb  = (7'd22 + man[6:0] - t[10:4] + {6'b0, x[1:2]});
-	wire		[ 7:0] gr  = (7'd11 + man[6:0] - t[11:5] + {6'b0, x[1:2]});
-	wire		[ 7:0] gg  = (7'd15 + man[6:0] - t[10:4] + {6'b0, x[1:2]});
-	wire		[ 7:0] gb  = (7'd12 + man[6:0] - t[11:5] + {6'b0, x[1:2]});
-	wire		[ 7:0] hr  = (7'd31 + man[6:0] - t[10:4] + {6'b0, x[1:2]});
-	wire		[ 7:0] hg  = (7'd35 + man[6:0] - t[11:5] + {6'b0, x[1:2]});
-	wire		[ 7:0] hb  = (7'd32 + man[6:0] - t[10:4] + {6'b0, x[1:2]});
+	wire		[ 7:0] fr  = (7'd21 + man[6:0] - t[10:4] + {6'b0, x[1:0]});
+	wire		[ 7:0] fg  = (7'd25 + man[6:0] - t[ 9:3] + {6'b0, x[1:0]});
+	wire		[ 7:0] fb  = (7'd22 + man[6:0] - t[10:4] + {6'b0, x[1:0]});
+	wire		[ 7:0] gr  = (7'd11 + man[6:0] - t[11:5] + {6'b0, x[1:0]});
+	wire		[ 7:0] gg  = (7'd15 + man[6:0] - t[10:4] + {6'b0, x[1:0]});
+	wire		[ 7:0] gb  = (7'd12 + man[6:0] - t[11:5] + {6'b0, x[1:0]});
+	wire		[ 7:0] hr  = (7'd31 + man[6:0] - t[10:4] + {6'b0, x[1:0]});
+	wire		[ 7:0] hg  = (7'd35 + man[6:0] - t[11:5] + {6'b0, x[1:0]});
+	wire		[ 7:0] hb  = (7'd32 + man[6:0] - t[10:4] + {6'b0, x[1:0]});
 
 	wire [19:0] mx = (rx-8) % 16;
 	wire [19:0] my = (ry-8) % 16;
@@ -55,8 +55,8 @@ module luz(
 		end else begin
 			abscol <= col<0 ? -col : col;
 			absrow <= row<0 ? -row : row;
-			if (in[0])
-				x <= {x[11] ^ x[13] ^ x[14] ^ x[16], x[1:15]};
+			if (~in[0])
+				x <= {x[5] ^ x[3] ^ x[2] ^ x[0], x[15:1]};
 			if ((640+16 <= rx) && (rx < 640+16+96))	H <= 0;
 			else					H <= 1;
 			if ((480+11 <= ry) && (ry < 480+11+2))	V <= 0;
@@ -64,7 +64,7 @@ module luz(
 			if (rx < 640+16+96+48-1) begin
 				rx <= rx+1;
 			end else begin
-				A <= x[1];
+				A <= x[0];
 				rx <= 0;
 				if (ry < 480+11+2+31-1) begin
 					ry <= ry+1;
