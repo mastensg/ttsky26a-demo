@@ -6,11 +6,12 @@ module snow(
 	output	reg [1:0] G,
 	output	reg [1:0] B,
 	input	wire	clk,
-	input	wire	run
+	input	wire	run,
+	input	wire [7:0] in
 );
 	reg [9:0] rx;
 	reg [9:0] ry;
-	reg [1:16] x;
+	reg [15:0] x;
 
 	always @(posedge clk) begin
 		if (~run) begin
@@ -18,7 +19,7 @@ module snow(
 			rx <= 0;
 			ry <= 0;
 		end else begin
-			x <= {x[11] ^ x[13] ^ x[14] ^ x[16], x[1:15]};
+			x <= {x[5] ^ x[3] ^ x[2] ^ x[0], x[15:1]};
 			if ((640+16 <= rx) && (rx < 640+16+96))	H <= 0;
 			else					H <= 1;
 			if ((480+11 <= ry) && (ry < 480+11+2))	V <= 0;
@@ -26,7 +27,7 @@ module snow(
 			if (rx < 640+16+96+48-1) begin
 				rx <= rx+1;
 			end else begin
-				A <= x[1];
+				A <= x[0];
 				rx <= 0;
 				if (ry < 480+11+2+31-1) begin
 					ry <= ry+1;
@@ -35,9 +36,9 @@ module snow(
 				end
 			end
 			if (rx<640 && ry<480) begin
-				R <= x[1:3];
-				G <= x[3:5];
-				B <= x[5:7];
+				R <= x[2:1];
+				G <= x[4:3];
+				B <= x[6:5];
 			end else begin
 				R <= 0;
 				G <= 0;
