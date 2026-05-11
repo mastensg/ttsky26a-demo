@@ -15,9 +15,6 @@ module luz(
 
 	reg [19:0] rx;
 	reg [19:0] ry;
-	reg signed [19:0] cx = 8;
-	reg signed [19:0] cy = 8;
-	reg [19:0] s2 = 6*6;
 
 	wire signed	[19:0] col = (rx-120) / 16 - 12;
 	wire signed	[19:0] row = (ry- 40) / 16 - 12;
@@ -37,15 +34,15 @@ module luz(
 
 	wire [19:0] mx = (rx-8) % 16;
 	wire [19:0] my = (ry-8) % 16;
-	wire signed [19:0] a = mx-cx;
-	wire signed [19:0] b = my-cy;
-	wire signed [19:0] aa = a*a;
-	wire signed [19:0] bb = b*b;
-	wire signed [19:0] r2 = aa+bb;
 	wire inni = 3<=mx&&mx<13 && 3<=my&&my<13;
+
+	reg [17:0] s;
+	reg [17:0] z;
 
 	always @(posedge clk) begin
 		if (~run) begin
+			s <= 0;
+			z <= 0;
 			t <= 0;
 			x <= 'b1010110011100001;
 			rx <= 0;
@@ -53,6 +50,9 @@ module luz(
 			abscol <= 0;
 			absrow <= 0;
 		end else begin
+			if (0 == t[6:1])	A <= x[0];
+			else			A <= s<z;
+			s <= s<123456 ? s+1 : 0;
 			abscol <= col<0 ? -col : col;
 			absrow <= row<0 ? -row : row;
 			if (~in[0])
@@ -64,13 +64,14 @@ module luz(
 			if (rx < 640+16+96+48-1) begin
 				rx <= rx+1;
 			end else begin
-				A <= x[0];
 				rx <= 0;
 				if (ry < 480+11+2+31-1) begin
 					ry <= ry+1;
 				end else begin
 					ry <= 0;
 					t <= t+1;
+					if (0 == t[4:0])
+						z <= {1'b0, x};
 				end
 			end
 			if (-12<=col && col<=+12 && -12<=row && row<=+12) begin
