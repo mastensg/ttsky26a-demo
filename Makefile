@@ -1,6 +1,6 @@
 .POSIX:
 
-ENVIRONMENT = PATH=$$(realpath oss-cad-suite/bin):$$PATH
+ENVIRONMENT = PATH=$$(realpath oss-cad-suite/bin):$$PATH TT_FPGA_FREQ=25
 FPGA = build/tt_um_mastensg_ttsky26a_demo.bin
 SOURCES = src/circ.v src/grad.v src/luz.v src/project.v src/snow.v
 
