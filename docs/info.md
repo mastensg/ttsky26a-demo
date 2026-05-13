@@ -13,7 +13,7 @@ It generates a VGA signal.
 
 ## How to test
 
-Connect VGA Pmod and monitor, clock at 80 MHz, and pulse reset.
+Connect VGA Pmod and monitor, clock at 25 MHz, and pulse reset.
 
 ## External hardware
 
