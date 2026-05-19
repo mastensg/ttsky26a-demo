@@ -4,10 +4,10 @@ ENVIRONMENT = PATH=$$(realpath oss-cad-suite/bin):$$PATH TT_FPGA_FREQ=25
 FPGA = build/tt_um_mastensg_ttsky26a_demo.bin
 SOURCES = src/circ.v src/grad.v src/luz.v src/project.v src/snow.v
 
-bload:
-	touch Makefile
-
 all: $(FPGA)
+
+apt:
+	apt install -y python3.13-dev python3.13-venv
 
 check:
 	verilator --top tt_um_mastensg_ttsky26a_demo --lint-only $(SOURCES)
@@ -32,4 +32,4 @@ setup:
 	[ -d pit			] || python3 -m venv pit
 	pit/bin/pip install -r tt/requirements.txt
 
-.PHONY: all check clean distclean load setup
+.PHONY: all apt check clean distclean load setup
